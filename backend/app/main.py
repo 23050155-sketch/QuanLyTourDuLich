@@ -11,12 +11,27 @@ from app.api.tours import router as tours_router
 from app.api.schedules import router as schedules_router
 from app.api.bookings import router as bookings_router
 
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI(
     title="Hệ thống Quản lý Tour Du lịch nội địa",
     description="RESTful API - HTTT16",
     version="1.0.0"
 )
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173"
+    ],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type"],
+)
+
 
 app.include_router(auth_router)
 app.include_router(tours_router)
