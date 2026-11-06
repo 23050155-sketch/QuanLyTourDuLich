@@ -23,6 +23,9 @@ function Navbar() {
           <span>Đang kiểm tra...</span>
         ) : user ? (
           <>
+
+            <Link to="/my-bookings">Đơn đặt Tour</Link>
+
             <span className="navbar-user">
               Xin chào, {user.full_name}
             </span>
