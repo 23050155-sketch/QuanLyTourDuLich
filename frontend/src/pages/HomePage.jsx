@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axiosClient from "../api/axiosClient";
+import { Link } from "react-router-dom";
 
 function HomePage() {
   const [tours, setTours] = useState([]);
@@ -69,9 +70,12 @@ function HomePage() {
                   {Number(tour.price).toLocaleString("vi-VN")} VNĐ
                 </p>
 
-                <button className="btn-detail">
+                <Link
+                  to={`/tours/${tour.id}`}
+                  className="btn-detail"
+                >
                   Xem chi tiết
-                </button>
+                </Link>
               </div>
             </div>
           ))}
