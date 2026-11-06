@@ -1,0 +1,37 @@
+from fastapi import FastAPI, HTTPException
+from sqlalchemy import text
+from sqlalchemy.exc import SQLAlchemyError
+
+from app.database import engine
+
+app = FastAPI(
+    title="Hệ thống Quản lý Tour Du lịch nội địa",
+    description="RESTful API - HTTT16",
+    version="1.0.0"
+)
+
+
+@app.get("/")
+def home():
+    return {
+        "message": "Chào mừng đến với hệ thống quản lý tour",
+        "status": "success"
+    }
+
+
+@app.get("/api/health")
+def health_check():
+    try:
+        with engine.connect() as connection:
+            connection.execute(text("SELECT 1"))
+
+        return {
+            "status": "success",
+            "database": "MySQL connected"
+        }
+
+    except SQLAlchemyError:
+        raise HTTPException(
+            status_code=503,
+            detail="Không thể kết nối cơ sở dữ liệu"
+        )
