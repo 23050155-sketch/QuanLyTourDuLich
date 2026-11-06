@@ -681,4 +681,28 @@ body {
   .booking-history-top {
     flex-direction: column;
   }
+} 
+
+
+
+.booking-history-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.booking-history-actions .cancel-booking-btn {
+  background: #fff1f2;
+  color: #be123c;
+  border: 1px solid #fecdd3;
+}
+
+.booking-history-actions .cancel-booking-btn:hover {
+  background: #ffe4e6;
+}
+
+.booking-history-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }

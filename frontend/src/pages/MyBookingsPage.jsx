@@ -29,6 +29,8 @@ function MyBookingsPage() {
   const [loading, setLoading] = useState(true);
   const [detailLoading, setDetailLoading] = useState(false);
   const [error, setError] = useState("");
+  const [cancellingId, setCancellingId] = useState(null);
+  const [success, setSuccess] = useState("");
 
   useEffect(() => {
     if (authLoading) return;
@@ -91,6 +93,57 @@ function MyBookingsPage() {
     }
   };
 
+
+  const handleCancelBooking = async (booking) => {
+    if (booking.status !== "pending") {
+        setError("Chỉ có thể hủy đơn đang chờ xác nhận.");
+        return;
+    }
+
+    const confirmed = window.confirm(
+        `Bạn có chắc chắn muốn hủy đơn đặt Tour #${booking.id}?`
+    );
+
+    if (!confirmed) return;
+
+    try {
+        setCancellingId(booking.id);
+        setError("");
+        setSuccess("");
+
+        await axiosClient.patch(
+        `/api/bookings/${booking.id}/cancel`
+        );
+
+        setBookings((previous) =>
+        previous.map((item) =>
+            item.id === booking.id
+            ? { ...item, status: "cancelled" }
+            : item
+        )
+        );
+
+        setSelectedBooking((previous) =>
+        previous?.id === booking.id
+            ? { ...previous, status: "cancelled" }
+            : previous
+        );
+
+        setSuccess(`Đã hủy đơn #${booking.id} thành công.`);
+    } catch (err) {
+        const detail = err.response?.data?.detail;
+
+        setError(
+        typeof detail === "string"
+            ? detail
+            : "Không thể hủy đơn. Vui lòng thử lại."
+        );
+    } finally {
+        setCancellingId(null);
+    }
+    };
+
+
   if (authLoading || loading) {
     return (
       <main className="my-bookings-page">
@@ -134,6 +187,12 @@ function MyBookingsPage() {
       {error && (
         <p className="auth-error" role="alert">
           {error}
+        </p>
+      )}
+
+      {success && (
+        <p className="booking-success" role="status">
+            {success}
         </p>
       )}
 
@@ -191,12 +250,24 @@ function MyBookingsPage() {
                 </div>
 
                 <div className="booking-history-actions">
-                  <button
-                    onClick={() => handleViewDetail(booking.id)}
-                    disabled={detailLoading}
-                  >
-                    Xem chi tiết
-                  </button>
+                    <button
+                        onClick={() => handleViewDetail(booking.id)}
+                        disabled={detailLoading}
+                    >
+                        Xem chi tiết
+                    </button>
+
+                    {booking.status === "pending" && (
+                        <button
+                        className="cancel-booking-btn"
+                        onClick={() => handleCancelBooking(booking)}
+                        disabled={cancellingId === booking.id}
+                        >
+                        {cancellingId === booking.id
+                            ? "Đang hủy..."
+                            : "Hủy đơn"}
+                        </button>
+                    )}
                 </div>
               </article>
             );
