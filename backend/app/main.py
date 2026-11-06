@@ -10,8 +10,10 @@ from app.api.auth import router as auth_router
 from app.api.tours import router as tours_router
 from app.api.schedules import router as schedules_router
 from app.api.bookings import router as bookings_router
+from app.api import tour_details
 
 from fastapi.middleware.cors import CORSMiddleware
+
 
 
 app = FastAPI(
@@ -37,6 +39,7 @@ app.include_router(auth_router)
 app.include_router(tours_router)
 app.include_router(schedules_router)
 app.include_router(bookings_router)
+app.include_router(tour_details.router)
 
 
 @app.get("/")
