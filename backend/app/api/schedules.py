@@ -6,6 +6,7 @@ from app.schemas.schedule import (
     ScheduleCreate, ScheduleUpdate, ScheduleResponse
 )
 from app.services.schedule_service import ScheduleService
+from app.core.dependencies import require_roles
 
 router = APIRouter(
     prefix="/api/schedules",
@@ -23,7 +24,12 @@ def get_schedule(schedule_id: int, db: Session = Depends(get_db)):
     return ScheduleService(db).get_by_id(schedule_id)
 
 
-@router.post("", response_model=ScheduleResponse, status_code=201)
+@router.post(
+    "",
+    response_model=ScheduleResponse,
+    status_code=201,
+    dependencies=[Depends(require_roles("admin", "staff"))]
+)
 def create_schedule(
     data: ScheduleCreate,
     db: Session = Depends(get_db)
@@ -31,7 +37,11 @@ def create_schedule(
     return ScheduleService(db).create(data)
 
 
-@router.put("/{schedule_id}", response_model=ScheduleResponse)
+@router.put(
+    "/{schedule_id}",
+    response_model=ScheduleResponse,
+    dependencies=[Depends(require_roles("admin", "staff"))]
+)
 def update_schedule(
     schedule_id: int,
     data: ScheduleUpdate,

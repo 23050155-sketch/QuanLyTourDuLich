@@ -30,7 +30,7 @@ class BookingService:
             raise HTTPException(404, "Không tìm thấy đơn đặt Tour")
         return booking
 
-    def create(self, data: BookingCreate):
+    def create(self, data: BookingCreate, user_id: int):
         try:
             # Khóa lịch khởi hành trong giao dịch MySQL
             schedule = self.schedule_repo.get_by_id(
@@ -47,16 +47,6 @@ class BookingService:
             if schedule.departure_date < date.today():
                 raise HTTPException(409, "Tour đã khởi hành")
 
-            # Kiểm tra khách hàng
-            from sqlalchemy import text
-            user = self.db.execute(
-                text("SELECT id FROM users WHERE id = :id"),
-                {"id": data.user_id}
-            ).first()
-
-            if not user:
-                raise HTTPException(404, "Tài khoản khách hàng không tồn tại")
-
             quantity = len(data.participants)
             reserved = self.schedule_repo.reserved_seats(schedule.id)
             available = schedule.capacity - reserved
@@ -72,7 +62,7 @@ class BookingService:
 
             booking = self.booking_repo.create(
                 {
-                    "user_id": data.user_id,
+                    "user_id": user_id,
                     "schedule_id": schedule.id,
                     "quantity": quantity,
                     "total_price": total_price,

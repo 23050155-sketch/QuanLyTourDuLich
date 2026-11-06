@@ -5,6 +5,8 @@ from app.database import get_db
 from app.schemas.tour import TourCreate, TourUpdate, TourResponse
 from app.services.tour_service import TourService
 
+from app.core.dependencies import require_roles
+
 router = APIRouter(prefix="/api/tours", tags=["Tours"])
 
 
@@ -21,7 +23,7 @@ def get_tour(tour_id: int, db: Session = Depends(get_db)):
     return TourService(db).get_by_id(tour_id)
 
 
-@router.post("", response_model=TourResponse, status_code=201)
+@router.post("", response_model=TourResponse, status_code=201, dependencies=[Depends(require_roles("admin"))])
 def create_tour(
     data: TourCreate,
     db: Session = Depends(get_db)
@@ -29,7 +31,7 @@ def create_tour(
     return TourService(db).create(data)
 
 
-@router.put("/{tour_id}", response_model=TourResponse)
+@router.put("/{tour_id}", response_model=TourResponse, dependencies=[Depends(require_roles("admin"))])
 def update_tour(
     tour_id: int,
     data: TourUpdate,
@@ -38,6 +40,6 @@ def update_tour(
     return TourService(db).update(tour_id, data)
 
 
-@router.delete("/{tour_id}")
+@router.delete("/{tour_id}", dependencies=[Depends(require_roles("admin"))])
 def delete_tour(tour_id: int, db: Session = Depends(get_db)):
     return TourService(db).delete(tour_id)

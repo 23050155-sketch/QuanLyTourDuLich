@@ -11,7 +11,6 @@ class ParticipantCreate(BaseModel):
 
 
 class BookingCreate(BaseModel):
-    user_id: int = Field(gt=0)
     schedule_id: int = Field(gt=0)
     participants: list[ParticipantCreate] = Field(min_length=1)
 
