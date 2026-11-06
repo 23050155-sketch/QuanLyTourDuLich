@@ -3,6 +3,13 @@ import { useParams, useNavigate } from "react-router-dom";
 import axiosClient from "../api/axiosClient";
 import { useAuth } from "../contexts/AuthContext";
 
+
+import TourOverview from "../components/tour-detail/TourOverview";
+import TourItinerary from "../components/tour-detail/TourItinerary";
+import TourMenus from "../components/tour-detail/TourMenus";
+import TourPolicies from "../components/tour-detail/TourPolicies";
+import TourGallery from "../components/tour-detail/TourGallery";
+
 function TourDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -21,38 +28,104 @@ function TourDetailPage() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
+
+  const [fullDetails, setFullDetails] = useState(null);
+  const [detailsLoading, setDetailsLoading] = useState(true);
+  const [detailsError, setDetailsError] = useState("");
+
+  // ===== TẢI THÔNG TIN TOUR VÀ LỊCH KHỞI HÀNH =====
   useEffect(() => {
-    const loadData = async () => {
+    if (!id) {
+      setError("Mã Tour không hợp lệ.");
+      setLoading(false);
+      return;
+    }
+
+    let active = true;
+
+    const loadTour = async () => {
       try {
         setLoading(true);
         setError("");
 
-        const [tourResponse, scheduleResponse] =
+        const [tourResponse, schedulesResponse] =
           await Promise.all([
             axiosClient.get(`/api/tours/${id}`),
             axiosClient.get("/api/schedules"),
           ]);
 
+        if (!active) return;
+
         setTour(tourResponse.data);
 
-        const availableSchedules = scheduleResponse.data.filter(
-          (schedule) =>
-            Number(schedule.tour_id) === Number(id) &&
-            schedule.status === "open" &&
-            new Date(`${schedule.departure_date}T00:00:00`) >=
-              new Date(new Date().toDateString())
-        );
+        // Lọc lịch khởi hành thuộc Tour đang xem
+        const allSchedules = Array.isArray(schedulesResponse.data)
+          ? schedulesResponse.data
+          : [];
 
-        setSchedules(availableSchedules);
+        setSchedules(
+          allSchedules.filter(
+            (schedule) =>
+              Number(schedule.tour_id) === Number(id) &&
+              schedule.status === "open"
+          )
+        );
       } catch (err) {
-        console.error(err);
-        setError("Không thể tải thông tin Tour.");
+        if (!active) return;
+
+        setError(
+          err.response?.data?.detail ||
+          "Không thể tải thông tin Tour."
+        );
       } finally {
-        setLoading(false);
+        if (active) {
+          setLoading(false);
+        }
       }
     };
 
-    loadData();
+    loadTour();
+
+    return () => {
+      active = false;
+    };
+  }, [id]);
+
+  useEffect(() => {
+    if (!id) return;
+
+    let active = true;
+
+    const loadFullDetails = async () => {
+      try {
+        setDetailsLoading(true);
+        setDetailsError("");
+
+        const response = await axiosClient.get(
+          `/api/tours/${id}/full-details`
+        );
+
+        if (active) {
+          setFullDetails(response.data);
+        }
+      } catch (error) {
+        if (active) {
+          setDetailsError(
+            "Không thể tải thông tin chi tiết Tour."
+          );
+        }
+      } finally {
+        if (active) {
+          setDetailsLoading(false);
+        }
+      }
+    };
+
+    loadFullDetails();
+
+    return () => {
+      active = false;
+    };
   }, [id]);
 
   const handleQuantityChange = (value) => {
@@ -201,7 +274,28 @@ function TourDetailPage() {
           <p className="tour-detail-description">
             {tour.description || "Đang cập nhật mô tả."}
           </p>
-        </section>
+
+          {/* ===== BƯỚC 6.5.3: NỘI DUNG CHI TIẾT TOUR ===== */}
+          {/* THÔNG TIN TỔNG QUAN TOUR */}
+          <div className="td-content">
+            {detailsLoading ? (
+              <p className="td-muted">
+                Đang tải thông tin chi tiết Tour...
+              </p>
+            ) : detailsError ? (
+              <p className="td-error" role="alert">
+                {detailsError}
+              </p>
+            ) : fullDetails ? (
+              <TourOverview
+                tour={tour}
+                details={fullDetails.details}
+              />
+            ) : null}
+          </div>
+          {/* ===== KẾT THÚC NỘI DUNG CHI TIẾT ===== */}
+
+          </section>
 
         <aside className="booking-panel">
           <h2>Đặt Tour ngay</h2>
@@ -317,9 +411,38 @@ function TourDetailPage() {
                   ? "Xác nhận đặt Tour"
                   : "Đăng nhập để đặt Tour"}
             </button>
-          </form>
+                    </form>
         </aside>
       </div>
+
+      {/* ===== NỘI DUNG CHI TIẾT TOÀN CHIỀU RỘNG ===== */}
+      {!detailsLoading && !detailsError && fullDetails && (
+        <div className="td-full-sections">
+
+          {/* Lịch trình từng ngày */}
+          <TourItinerary
+            itinerary={fullDetails.itinerary}
+          />
+
+          {/* Thực đơn */}
+          <TourMenus
+            itinerary={fullDetails.itinerary}
+          />
+
+          {/* Chính sách Tour */}
+          <TourPolicies
+            policies={fullDetails.policies}
+          />
+
+          {/* Hình ảnh điểm đến */}
+          <TourGallery
+            images={fullDetails.images}
+          />
+
+        </div>
+      )}
+      {/* ===== KẾT THÚC NỘI DUNG CHI TIẾT ===== */}
+
     </main>
   );
 }

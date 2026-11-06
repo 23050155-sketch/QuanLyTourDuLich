@@ -706,3 +706,489 @@ body {
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+
+
+
+/* ===== TOUR DETAIL UPGRADE 6.5.3 ===== */
+
+.td-content {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  min-width: 0;
+  margin: 30px 0;
+}
+
+.td-section {
+  background: #fff;
+  padding: 26px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 3px 14px rgba(15, 23, 42, 0.04);
+  color: #1e293b;
+}
+
+.td-section > h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 22px;
+  font-size: 22px;
+  color: #123d67;
+}
+
+.td-muted {
+  color: #64748b;
+}
+
+.td-error {
+  color: #b91c1c;
+  padding: 12px;
+  background: #fef2f2;
+  border-radius: 8px;
+}
+
+/* Overview */
+
+.td-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.td-overview-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 10px;
+}
+
+.td-overview-icon {
+  color: #0d9488;
+  flex-shrink: 0;
+}
+
+.td-overview-item div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.td-overview-item span {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.td-overview-item strong {
+  overflow-wrap: anywhere;
+  font-size: 15px;
+}
+
+.td-note {
+  margin-top: 18px;
+  padding: 15px;
+  background: #eff6ff;
+  border-radius: 8px;
+  white-space: pre-line;
+}
+
+/* Itinerary */
+
+.td-itinerary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.td-day {
+  border: 1px solid #dbe4ed;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.td-day-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 17px 20px;
+  border: 0;
+  background: #edf7f6;
+  color: #123d67;
+  font-weight: 700;
+  font-size: 16px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.td-day-content {
+  padding: 22px;
+}
+
+.td-day-overview {
+  margin: 0 0 22px;
+  color: #475569;
+  white-space: pre-line;
+}
+
+.td-activity-list {
+  border-left: 2px solid #99d5cc;
+  margin-left: 7px;
+  padding-left: 20px;
+}
+
+.td-activity {
+  position: relative;
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.td-activity::before {
+  content: "";
+  position: absolute;
+  left: -27px;
+  top: 5px;
+  width: 10px;
+  height: 10px;
+  background: #0d9488;
+  border-radius: 50%;
+}
+
+.td-activity-time {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  color: #0f766e;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.td-activity-body h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+
+.td-activity-body p {
+  margin: 6px 0;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+.td-activity-location {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #64748b;
+  font-size: 13px;
+}
+
+/* Menus */
+
+.td-menu-day {
+  margin-bottom: 24px;
+}
+
+.td-menu-day > h3 {
+  margin-bottom: 14px;
+  color: #123d67;
+}
+
+.td-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.td-menu-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: 10px;
+}
+
+.td-menu-card p {
+  margin: 0;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+.td-meal-included {
+  color: #047857;
+  font-size: 12px;
+}
+
+.td-meal-excluded {
+  color: #b45309;
+  font-size: 12px;
+}
+
+/* Policies */
+
+.td-policy-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.td-policy-block {
+  margin-bottom: 18px;
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 10px;
+}
+
+.td-policy-block h3 {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 14px;
+  color: #123d67;
+  font-size: 17px;
+}
+
+.td-policy-positive h3 {
+  color: #047857;
+}
+
+.td-policy-negative h3 {
+  color: #be123c;
+}
+
+.td-policy-text {
+  white-space: pre-line;
+  line-height: 1.85;
+  overflow-wrap: anywhere;
+}
+
+/* Gallery */
+
+.td-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.td-gallery-item {
+  margin: 0;
+  text-align: center;
+}
+
+.td-gallery-item button {
+  width: 100%;
+  padding: 0;
+  border: none;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f1f5f9;
+  cursor: pointer;
+}
+
+.td-gallery-item img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  transition: transform 0.2s;
+}
+
+.td-gallery-item button:hover img {
+  transform: scale(1.04);
+}
+
+.td-gallery-item figcaption {
+  padding: 10px 0;
+  font-size: 14px;
+  color: #475569;
+}
+
+.td-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 35px;
+}
+
+.td-lightbox-content {
+  position: relative;
+  max-width: 1000px;
+  max-height: 95vh;
+  color: #fff;
+  text-align: center;
+}
+
+.td-lightbox-content img {
+  max-width: 100%;
+  max-height: 75vh;
+  object-fit: contain;
+}
+
+.td-lightbox-close {
+  position: absolute;
+  right: 0;
+  top: -35px;
+  border: none;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .td-gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .td-menu-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .td-section {
+    padding: 18px;
+  }
+
+  .td-overview-grid,
+  .td-policy-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .td-activity {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .td-gallery-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+}
+
+
+
+
+/* ===== BƯỚC 6.5.3: BỐ CỤC CHI TIẾT TOUR ===== */
+
+/* Phần giới thiệu và đặt Tour phía trên */
+.tour-detail-grid {
+  align-items: start;
+}
+
+/* Thông tin tổng quan bên trái */
+.tour-information {
+  min-width: 0;
+}
+
+.tour-information .td-content {
+  margin-bottom: 0;
+}
+
+/* Lịch trình, thực đơn, chính sách và hình ảnh
+   nằm bên dưới hai cột, chiếm toàn chiều rộng */
+.td-full-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin-top: 32px;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Các khối nội dung rộng hơn */
+.td-full-sections > .td-section {
+  width: 100%;
+  padding: 30px;
+}
+
+/* Tiêu đề */
+.td-full-sections .td-section > h2 {
+  font-size: 24px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* Lịch trình */
+.td-full-sections .td-day {
+  margin-bottom: 14px;
+}
+
+.td-full-sections .td-day-header {
+  padding: 20px 24px;
+  font-size: 17px;
+}
+
+.td-full-sections .td-day-content {
+  padding: 26px;
+}
+
+/* Hoạt động theo giờ */
+.td-full-sections .td-activity {
+  grid-template-columns: 140px minmax(0, 1fr);
+  gap: 24px;
+}
+
+/* Thực đơn */
+.td-full-sections .td-menu-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* Thư viện ảnh */
+.td-full-sections .td-gallery-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .td-full-sections .td-gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .td-full-sections .td-menu-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Điện thoại */
+@media (max-width: 640px) {
+  .td-full-sections {
+    gap: 18px;
+    margin-top: 20px;
+  }
+
+  .td-full-sections > .td-section {
+    padding: 18px;
+  }
+
+  .td-full-sections .td-section > h2 {
+    font-size: 20px;
+  }
+
+  .td-full-sections .td-activity {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .td-full-sections .td-menu-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .td-full-sections .td-gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .td-full-sections .td-day-content {
+    padding: 16px;
+  }
+}
