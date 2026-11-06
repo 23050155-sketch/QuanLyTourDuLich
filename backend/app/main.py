@@ -3,12 +3,15 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.database import engine
+from app.api.tours import router as tours_router
 
 app = FastAPI(
     title="Hệ thống Quản lý Tour Du lịch nội địa",
     description="RESTful API - HTTT16",
     version="1.0.0"
 )
+
+app.include_router(tours_router)
 
 
 @app.get("/")
